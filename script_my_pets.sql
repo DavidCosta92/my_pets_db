@@ -10,14 +10,14 @@ CREATE TABLE IF NOT EXISTS `user` (
 
 CREATE TABLE IF NOT EXISTS `owner` (
   `id_owner` INT NOT NULL AUTO_INCREMENT,
-  `id_user_owner` INT NOT NULL,
+  `id_user` INT NOT NULL,
   `name` VARCHAR(30) NOT NULL,
   `last_name` VARCHAR(30) NOT NULL,
   `phone` VARCHAR(15) NOT NULL,
   `address` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`id_owner`),
   CONSTRAINT `id_user_owner`
-	FOREIGN KEY (`id_user_owner`) 
+	FOREIGN KEY (`id_user`) 
     REFERENCES `user` (`id_user`) 
     ON DELETE CASCADE 
     ON UPDATE CASCADE
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `owner` (
   
 CREATE TABLE IF NOT EXISTS `vet` (
   `id_vet` INT NOT NULL AUTO_INCREMENT,
-  `id_user_vet` INT NOT NULL,
+  `id_user` INT NOT NULL,
   `name` VARCHAR(30) NOT NULL,
   `last_name` VARCHAR(30) NOT NULL,
   `phone` VARCHAR(15) NOT NULL,
@@ -33,10 +33,123 @@ CREATE TABLE IF NOT EXISTS `vet` (
   `emergency` TINYINT NOT NULL DEFAULT 0,
   PRIMARY KEY (`id_vet`),
   CONSTRAINT `id_user_vet`
-	FOREIGN KEY (`id_user_vet`) 
+	FOREIGN KEY (`id_user`) 
     REFERENCES `user` (`id_user`) 
     ON DELETE CASCADE 
     ON UPDATE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS `pet` (
+  `id_pet` INT NOT NULL AUTO_INCREMENT,
+  `id_owner` INT NOT NULL,
+  `name` VARCHAR(30) NOT NULL,
+  `species` VARCHAR(30) NOT NULL,
+  `description` TEXT NOT NULL,
+  `birthday` DATE NOT NULL,
+  `breed` VARCHAR(100),
+  PRIMARY KEY (`id_pet`),
+  CONSTRAINT `id_owner`
+	FOREIGN KEY (`id_owner`) 
+    REFERENCES `owner` (`id_owner`) 
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE
+);
+  CREATE TABLE IF NOT EXISTS `medical_history` (
+  `id_medical_history` INT NOT NULL AUTO_INCREMENT,
+  `id_pet` INT NOT NULL,
+  `weight` FLOAT NOT NULL,
+  `medical_summary` TEXT NOT NULL,
+  PRIMARY KEY (`id_medical_history`),
+  CONSTRAINT `id_pet_medical_history`
+	FOREIGN KEY (`id_pet`) 
+    REFERENCES `pet` (`id_pet`) 
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE
+);
+  CREATE TABLE IF NOT EXISTS `food` (
+  `id_food` INT NOT NULL AUTO_INCREMENT,
+  `brand` VARCHAR(50),
+  `line` VARCHAR(50),
+  `details` TEXT,
+  PRIMARY KEY (`id_food`)
   );
   
+CREATE TABLE IF NOT EXISTS `appointment` (
+  `id_appointment` INT NOT NULL AUTO_INCREMENT,
+  `id_vet` INT NOT NULL,
+  `id_medical_history` INT NOT NULL,
+  `date` DATETIME,
+  `diagnosis` TEXT,
+PRIMARY KEY (`id_appointment`),
+CONSTRAINT `id_appointment_vet`
+	FOREIGN KEY (`id_vet`) 
+    REFERENCES `vet` (`id_vet`) 
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE,
+CONSTRAINT `id_appointment_id_medical_history`
+	FOREIGN KEY (`id_medical_history`) 
+    REFERENCES `medical_history` (`id_medical_history`) 
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE
+  );
 
+CREATE TABLE IF NOT EXISTS `surgery` (
+  `id_surgery` INT NOT NULL AUTO_INCREMENT,
+  `id_vet` INT NOT NULL,
+  `id_medical_history` INT NOT NULL,
+  `date` DATETIME,
+  `diagnosis` TEXT,
+PRIMARY KEY (`id_surgery`),
+CONSTRAINT `id_surgery_vet`
+	FOREIGN KEY (`id_vet`) 
+    REFERENCES `vet` (`id_vet`) 
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE,
+CONSTRAINT `id_surgery_id_medical_history`
+	FOREIGN KEY (`id_medical_history`) 
+    REFERENCES `medical_history` (`id_medical_history`) 
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE
+  );
+
+CREATE TABLE IF NOT EXISTS `treatment` (
+  `id_treatment` INT NOT NULL AUTO_INCREMENT,
+  `id_appointment` INT NOT NULL,
+  `date` DATETIME,
+  `name` VARCHAR(50),
+  `medicine` VARCHAR(50),
+  `end_date` DATETIME,
+  `description` TEXT,
+PRIMARY KEY (`id_treatment`),
+CONSTRAINT `id_treatment_appointment`
+	FOREIGN KEY (`id_appointment`) 
+    REFERENCES `appointment` (`id_appointment`) 
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE
+  );
+    
+CREATE TABLE IF NOT EXISTS `medicine` (
+  `id_medicine` INT NOT NULL AUTO_INCREMENT,  
+  `name` VARCHAR(30),
+  `drug` VARCHAR(50),
+  `administration` VARCHAR(30),
+  `type` VARCHAR(30),
+  `periodic` INT DEFAULT 0,
+PRIMARY KEY (`id_medicine`)
+);
+CREATE TABLE IF NOT EXISTS `treatment_medicine` (
+  `id_treatment_medicine` INT NOT NULL AUTO_INCREMENT,  
+  `id_treatment` INT NOT NULL,
+  `id_medicine` INT NOT NULL,
+PRIMARY KEY (`id_treatment_medicine`),
+CONSTRAINT `id_treatment_medicine_id_treatment`
+	FOREIGN KEY (`id_treatment`) 
+    REFERENCES `treatment` (`id_treatment`) 
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE,
+CONSTRAINT `id_treatment_medicine_id_medicine`
+	FOREIGN KEY (`id_medicine`) 
+    REFERENCES `medicine` (`id_medicine`) 
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE
+);
