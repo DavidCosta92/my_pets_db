@@ -7,7 +7,6 @@ CREATE TABLE IF NOT EXISTS `user` (
   `password` VARCHAR(50) NOT NULL,
   PRIMARY KEY (`id_user`)
   );
-
 CREATE TABLE IF NOT EXISTS `owner` (
   `id_owner` INT NOT NULL AUTO_INCREMENT,
   `id_user` INT NOT NULL,
@@ -54,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `pet` (
     ON DELETE CASCADE 
     ON UPDATE CASCADE
 );
-  CREATE TABLE IF NOT EXISTS `medical_history` (
+CREATE TABLE IF NOT EXISTS `medical_history` (
   `id_medical_history` INT NOT NULL AUTO_INCREMENT,
   `id_pet` INT NOT NULL,
   `weight` FLOAT NOT NULL,
@@ -66,19 +65,12 @@ CREATE TABLE IF NOT EXISTS `pet` (
     ON DELETE CASCADE 
     ON UPDATE CASCADE
 );
-  CREATE TABLE IF NOT EXISTS `food` (
-  `id_food` INT NOT NULL AUTO_INCREMENT,
-  `brand` VARCHAR(50),
-  `line` VARCHAR(50),
-  `details` TEXT,
-  PRIMARY KEY (`id_food`)
-  );
   
 CREATE TABLE IF NOT EXISTS `appointment` (
   `id_appointment` INT NOT NULL AUTO_INCREMENT,
   `id_vet` INT NOT NULL,
   `id_medical_history` INT NOT NULL,
-  `date` DATETIME,
+  `date` DATETIME DEFAULT CURRENT_TIMESTAMP,
   `diagnosis` TEXT,
 PRIMARY KEY (`id_appointment`),
 CONSTRAINT `id_appointment_vet`
@@ -115,7 +107,7 @@ CONSTRAINT `id_surgery_id_medical_history`
 CREATE TABLE IF NOT EXISTS `treatment` (
   `id_treatment` INT NOT NULL AUTO_INCREMENT,
   `id_appointment` INT NOT NULL,
-  `date` DATETIME,
+  `date` DATE,
   `name` VARCHAR(50),
   `medicine` VARCHAR(50),
   `end_date` DATETIME,
