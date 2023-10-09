@@ -195,6 +195,15 @@ VALUES (11 ,'Matías' , 'Saavedra' , '6443797' , 'Ponce  4'),
 (19 ,'Valentina' , 'Díaz' , '(490)459-1341' , 'Juan Diego  44 60 D'),
 (20 ,'Micaela' , 'Flores' , '+68666346' , 'Alexander  9567');
 
+INSERT INTO `my_pets`.`user` (`email`, `password`) VALUES 
+('vcamarillo@gmail.com', 'password' ),
+('ybravo@gmail.com', 'password' );
+
+INSERT INTO `my_pets`.`owner` (id_user, name, last_name, phone, address) 
+VALUES 
+(23 ,'Christopher' , 'Munguía' , '(468)456-7495' , 'Orta  3'),
+(24 ,'Micaela' , 'Flores' , '+68666346' , 'Alexander  9567');
+
 -- INSERTS PET
 INSERT INTO `my_pets`.`pet` (id_owner, name, species, description, birthday, breed) 
 VALUES (1,'Salomé', 'perro', 'marron y negro' , '2017-07-10', 'beagle'),

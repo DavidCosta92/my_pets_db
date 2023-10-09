@@ -27,5 +27,33 @@ BEGIN
 END $$_stored_precedure_$$
 DELIMITER ;
 
-/*El otro S.P. qué crearás, puede (1: insertar registros en una tabla de tu proyecto. 2: eliminar algún registro específico de una tabla de tu proyecto.)*/
-
+/*
+Este Stored procedure es para eliminar aquellos owners que no tengan ninguna mascota registrada a su nombre. Ademas, elimina el usuario relacionado al owner.
+Este procedimiento esta pensado para hacer eventuales limpiezas de las tablas user y owner.
+	call my_pets.eliminar_owners_sin_mascotas();
+*/
+DELIMITER $$_stored_precedure_$$
+CREATE PROCEDURE `eliminar_owners_sin_mascotas`()
+BEGIN
+	SET SQL_SAFE_UPDATES = 0;
+	SET @owners_name_to_delete = (SELECT GROUP_CONCAT(CONCAT(owner.name , " ", owner.last_name) SEPARATOR ", ") FROM owner
+									WHERE owner.id_owner NOT IN (SELECT id_owner FROM pet));	
+    SET @owners_id_to_delete = (SELECT GROUP_CONCAT(owner.id_owner) FROM owner
+									WHERE owner.id_owner NOT IN (SELECT id_owner FROM pet));         
+    SET @users_id_to_delete = (SELECT GROUP_CONCAT(owner.id_user) FROM owner
+									WHERE owner.id_owner NOT IN (SELECT id_owner FROM pet));          
+                                
+	IF @owners_name_to_delete IS NULL THEN
+		SELECT "Tabla ya esta limpia, previamente se borraron los registros.";
+	ELSE 
+		DELETE FROM owner 
+        WHERE find_in_set(id_owner , @owners_id_to_delete);                
+		 
+        DELETE FROM user
+        WHERE find_in_set(id_user , @users_id_to_delete);
+        
+        SELECT @owners_name_to_delete "Dueños eliminados";        
+    END IF;
+	SET SQL_SAFE_UPDATES = 1;
+END $$_stored_precedure_$$
+DELIMITER ;
