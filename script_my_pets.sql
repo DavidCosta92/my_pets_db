@@ -145,3 +145,25 @@ CONSTRAINT `id_treatment_medicine_id_medicine`
     ON DELETE CASCADE 
     ON UPDATE CASCADE
 );
+-- LOG TABLES
+CREATE TABLE IF NOT EXISTS log_appointment (
+	id_log_app INT PRIMARY KEY AUTO_INCREMENT,
+    real_user VARCHAR(50),
+    real_date DATE,
+    real_time TIME,
+    type_op VARCHAR(50),
+    id_appointment INT,    
+    id_vet INT,
+    id_pet INT,
+    app_date DATETIME,
+    diagnosis TEXT
+);
+CREATE TABLE IF NOT EXISTS log_medicine (
+	id_log_medicine INT PRIMARY KEY AUTO_INCREMENT,
+    id_medicine INT,
+    id_pet INT,
+    real_user VARCHAR(50),
+    real_date DATE,
+    real_time TIME,
+    type_op VARCHAR(50)
+);

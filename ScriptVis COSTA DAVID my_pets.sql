@@ -41,7 +41,8 @@ CREATE OR REPLACE VIEW drogas_usadas_cantidad_para_reposicion AS (
 			HAVING treatment_medicine.id_medicine = medicine.id_medicine )  "Unidades usadas"
 	FROM medicine
 );
-SELECT * FROM drogas_usadas_cantidad_para_reposicion;
+SELECT * FROM drogas_usadas_cantidad_para_reposicion
+WHERE drogas_usadas_cantidad_para_reposicion.Medicina = 1;
 
 -- Obtener datos contacto de veterinarios con experiencia en cirugias y que puedan hacer urgencias
 CREATE OR REPLACE VIEW cirujanos_que_hacen_emergencias AS (
@@ -49,5 +50,6 @@ CREATE OR REPLACE VIEW cirujanos_que_hacen_emergencias AS (
 	JOIN vet ON surgery.id_vet = vet.id_vet
 	WHERE vet.emergency = 1
 );
+
 SELECT * FROM cirujanos_que_hacen_emergencias;
 
