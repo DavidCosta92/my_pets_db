@@ -160,10 +160,14 @@ CREATE TABLE IF NOT EXISTS log_appointment (
 );
 CREATE TABLE IF NOT EXISTS log_medicine (
 	id_log_medicine INT PRIMARY KEY AUTO_INCREMENT,
-    id_medicine INT,
-    id_pet INT,
     real_user VARCHAR(50),
     real_date DATE,
     real_time TIME,
-    type_op VARCHAR(50)
-);
+    type_op VARCHAR(50),    
+    id_medicine INT,
+    name VARCHAR(30),
+	drug VARCHAR(50),
+	administration VARCHAR(30),
+	type VARCHAR(30),
+	periodic INT 
+); 
