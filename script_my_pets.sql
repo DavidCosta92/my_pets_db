@@ -142,7 +142,7 @@ CONSTRAINT `id_treatment_medicine_id_treatment`
 CONSTRAINT `id_treatment_medicine_id_medicine`
 	FOREIGN KEY (`id_medicine`) 
     REFERENCES `medicine` (`id_medicine`) 
-    ON DELETE CASCADE 
+    ON DELETE CASCADE cirujanos_que_hacen_emergencias
     ON UPDATE CASCADE
 );
 -- LOG TABLES

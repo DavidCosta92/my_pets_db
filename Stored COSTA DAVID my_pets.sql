@@ -11,8 +11,9 @@ Ejemplos:
 DELIMITER $$_stored_precedure_$$
 CREATE PROCEDURE `obtener_tabla_ordenada_por` (IN tableName VARCHAR(30) , IN orderBy VARCHAR(30) , IN sortBy VARCHAR(4))
 BEGIN	
-	IF tableName = '' THEN /* SI NOMBRE DE TABLA VACIO, RETORNAR UN MENSAJE QUE DIGA QUE NECESITAMOS EL NOMBRE */    
-		SELECT "Nececitamos al menos el nombre de la tabla!";     
+	IF tableName = '' THEN /* SI NOMBRE DE TABLA VACIO, RETORNAR UN MENSAJE QUE DIGA QUE NECESITAMOS EL NOMBRE */
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = "Nececitamos al menos el nombre de la tabla!";
 	ELSE
 		IF orderBy = '' THEN /* SI VIENE NOMBRE DE TABLA, SIN CAMPOS DE ORDEN, SIMPLEMENTE HACER EL SELECT  */
 			SET @queryToExc = CONCAT("SELECT * FROM ", tableName );		
@@ -44,7 +45,8 @@ BEGIN
 									WHERE owner.id_owner NOT IN (SELECT id_owner FROM pet));          
                                 
 	IF @owners_name_to_delete IS NULL THEN
-		SELECT "Tabla ya esta limpia, previamente se borraron los registros.";
+		SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = "Tabla ya esta limpia, previamente se borraron los registros.";
 	ELSE 
 		DELETE FROM owner 
         WHERE find_in_set(id_owner , @owners_id_to_delete);                
