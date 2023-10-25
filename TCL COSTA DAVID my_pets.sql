@@ -1,9 +1,11 @@
 USE my_pets;
-SELECT @@autocommit;
-SET @AUTOCOMMIT = 0;
+SELECT @@autocommit; -- REVISO ESTADO DE AUTOCOMMIT
+SET @AUTOCOMMIT = 0; -- DESHABILITO AUTOCOMMIT
 
--- --------- TABLA USER --------- 
+-- --------- TABLA USER ----
+-- ESTA TABLA TIENE RESTRICCIONES, POR LO QUE SE CREAN DATOS NUEVOS QUE PERMITAN ELIMINAR
 /*
+DATOS A ELIMINAR
 INSERT INTO `my_pets`.`user` (`email`, `password`) VALUES 
 ('1@gmail.com', 'password' ),
 ('2@gmail.com', 'password' ),
@@ -23,12 +25,12 @@ WHERE user.email LIKE "1%"
 	OR user.email LIKE "6%" 
 	OR user.email LIKE "7%";
     
--- ROLLBACK;
--- COMMIT;
+-- ROLLBACK; -- PARA DESHACER TRANSACCION
+-- COMMIT; -- PARA CONFIRMAR DELETES
 -- SELECT * FROM user;
 -- --------- TABLA USER --------- 
 
--- --------- TABLA TREATMENT_MEDICINE --------- 
+-- --------- TABLA TREATMENT_MEDICINE -- ESTA TABLA NO TIENE RESTRICCIONES ------- 
 START TRANSACTION;
 INSERT INTO `my_pets`.`treatment_medicine` (id_treatment , id_medicine)
 VALUES 
@@ -36,7 +38,7 @@ VALUES
 (1,3),
 (1,1),
 (2,2);
-SAVEPOINT primer_cuarteto;
+SAVEPOINT primer_cuarteto; -- GUARDAR PUNTO DE PRIMERAS INSERCIONES
 
 INSERT INTO `my_pets`.`treatment_medicine` (id_treatment , id_medicine)
 VALUES 
@@ -44,10 +46,10 @@ VALUES
 (2,1),
 (2,3),
 (2,1);
-SAVEPOINT segundo_cuarteto;
+SAVEPOINT segundo_cuarteto; -- GUARDAR PUNTO DE SEGUNDAS INSERCIONES
 
-RELEASE SAVEPOINT primer_cuarteto;
+RELEASE SAVEPOINT primer_cuarteto; -- ELIMINAR EL PUNTO DE LAS PRIMERAS INSERCIONES
 -- SELECT * FROM treatment_medicine;
 -- --------- TABLA TREATMENT_MEDICINE --------- 
 
-SET @AUTOCOMMIT = 1;
+SET @AUTOCOMMIT = 1; -- VUELVO A HABLITAR AUTOCOMMIT
