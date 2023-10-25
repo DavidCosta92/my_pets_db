@@ -38,3 +38,32 @@ SET name = 'otro nombre' WHERE (`id_pet` = '10');
 -- Test DELETE user admin
 DELETE FROM pet
 WHERE id_pet = 10;
+
+
+
+USE mysql;
+SELECT * FROM user;
+
+CREATE USER 'costa_david'@'%' IDENTIFIED BY 'password123';  -- % seria para cualquier Entorno de aplicacion o dominio ip host que se conecta
+CREATE USER 'costa_david'@'127.0.0.1' IDENTIFIED BY 'password123';
+
+ALTER USER 'costa_david'@'localhost' IDENTIFIED BY 'password-CAMBIADO'; 
+
+-- CAMBIAR CONTRASEÑA EN VERSIONES VIEJAS DE SQL
+UPDATE USER 
+SET Password = PASSWORD('password-CAMBIADO')
+WHERE  User = 'costa_david' AND Host = 'localhost';
+
+DROP USER 'costa_david'@'localhost';
+RENAME USER 'costa_david'@'localhost' TO 'DAVID'@'localhost';
+SHOW GRANTS FOR 'costa_david'@'localhost';
+
+
+-- PERMISOS
+ GRANT ALL ON *.* TO 'costa_david'@'localhost';  -- TODOS LOS PERMISOS SOBRE TODOS LOS OBJETOS
+ GRANT ALL ON my_pets.* TO 'costa_david'@'localhost';  -- TODOS LOS PERMISOS SOBRE OBJETOS DE LA BD my_pets
+ GRANT ALL ON my_pets.medicine TO 'costa_david'@'localhost';  -- TODOS LOS PERMISOS SOBRE OBJETOS DE LA TABLA medicine
+ GRANT SELECT, UPDATE ON my_pets.medicine TO 'costa_david'@'localhost'; -- PERMISOS ESPECIFICOS SOLAMENTE
+ GRANT SELECT (campo1 , campo2) ON my_pets.medicine TO 'costa_david'@'localhost';  -- PERMISOS PARA DETERMINADOS CAMPOS, EN ESTE CASO, SELECT * DARIA ERROR, DEBE SER UN SELECT CAMPO1, CAMPO2
+ 
+ REVOKE ALL ON *.* FROM 'costa_david'@'localhost'; 

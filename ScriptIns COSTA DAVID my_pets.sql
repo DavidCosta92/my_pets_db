@@ -166,7 +166,13 @@ INSERT INTO `my_pets`.`user` (`email`, `password`) VALUES
 ('juansebastian.banda@melgar.com', 'password' ),
 ('jmendoza@garcia.net', 'password' ),
 ('jmendoz@garcia.net', 'password' ),
-('ybravo@gmail.com', 'password' );
+('1@gmail.com', 'password' ),
+('2@gmail.com', 'password' ),
+('3@gmail.com', 'password' ),
+('4@gmail.com', 'password' ),
+('5@gmail.com', 'password' ),
+('6@gmail.com', 'password' ),
+('7@gmail.com', 'password' );
 
 
 -- INSERTS VET
